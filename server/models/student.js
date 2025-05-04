@@ -18,6 +18,13 @@ const studentSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
+    resume : {
+      type : String,
+      required : true
+    },
+    profilePic : {
+      type : String,
+    },
     phone: {
       type: String,
       required: true,

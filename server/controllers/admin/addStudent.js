@@ -30,9 +30,13 @@ const addStudent = async (req, res) => {
       twelfthYear,
       cgpa,
       degreeYear,
+     
 
       // resume,
     } = req.body;
+
+    const resumeUrl = req.files?.resume?.[0]?.path || null;
+    const profilePicUrl = req.files?.profilePic?.[0]?.path || null;
 
     // Check for existing student
     const existingStudent = await Student.findOne({ email });
@@ -108,13 +112,16 @@ const addStudent = async (req, res) => {
       twelfthYear,
       cgpa,
       degreeYear,
+      resume: resumeUrl,
+      profilePic: profilePicUrl,
     });
 
     // await student.save();
 
     res.status(201).json({ message: "Student added successfully", student });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Server error", error: err.message });
+
   }
 };
 

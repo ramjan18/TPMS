@@ -17,6 +17,7 @@ const addTPO = async (req, res) => {
   try {
     const { name, employeeId, email, phone, password } = req.body;
 
+     const profilePicUrl = req.files?.profilePic?.[0]?.path || null;
     // Check for existing TPO by email or employeeId
     const existingTPO = await TPO.findOne({ $or: [{ email }, { employeeId }] });
     if (existingTPO) {
@@ -82,6 +83,7 @@ const addTPO = async (req, res) => {
       email,
       phone,
       password: hashedPassword,
+      profilePic: profilePicUrl,
       // department and role are auto-set by schema defaults
     });
 

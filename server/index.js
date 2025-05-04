@@ -17,6 +17,7 @@ app.use(
   })
 );
 
+
 //---------------connection------------------
 connect();
 
@@ -26,12 +27,11 @@ app.get("/api", (req, res) => {
 
 const userRoutes = require("./routes/userRoutes");
 const companyRoutes = require("./routes/companyRoutes");
-const adminRoutes = require('./routes/adminRoutes');
-
+const adminRoutes = require("./routes/adminRoutes");
 
 app.use("/api", userRoutes);
 app.use("/api", companyRoutes);
-app.use('/api' , adminRoutes);
+app.use("/api", adminRoutes);
 
 app.listen(5000, "0.0.0.0", () => {
   console.log("App is running on http://0.0.0.0:5000");
