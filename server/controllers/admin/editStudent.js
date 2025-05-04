@@ -20,6 +20,10 @@ const updateStudent = async (req, res) => {
     password, // Optional, only update if provided
   } = req.body;
 
+  const student = await Student.findById(id);
+
+   const resumeUrl = req.files?.resume?.[0]?.path || student.resume;
+   const profilePicUrl = req.files?.profilePic?.[0]?.path || student.profilePic;
   try {
     // Prepare update object
     const updateFields = {
@@ -36,7 +40,9 @@ const updateStudent = async (req, res) => {
       cgpa,
       degreeYear,
       skills,
-      password
+      password,
+      resume: resumeUrl,
+      profilePic : profilePicUrl
     };
 
     if (password) {

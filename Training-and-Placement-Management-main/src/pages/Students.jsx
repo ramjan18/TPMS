@@ -18,7 +18,6 @@ export default function Students() {
   function open(mode, st = {}) {
     setMode(mode);
     setCurrent(st._id || null);
-
     setForm({
       name: st.name || "",
       email: st.email || "",
@@ -33,8 +32,8 @@ export default function Students() {
       twelfthMarks: st.twelfthMarks || "",
       degreeYear: st.degreeYear || "",
       cgpa: st.cgpa || "",
-      resume: st.resume || null, // Resume URL (view mode)
-      profilePic: st.profilePic || null, // Profile URL (view mode)
+      resume: st.resume || null,
+      profilePic: st.profilePic || null,
     });
   }
 
@@ -150,23 +149,33 @@ export default function Students() {
 
       {/* Modal */}
       {mode && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-40">
-          <div className="bg-white/50 backdrop-blur-md rounded-lg shadow-lg w-full max-w-3xl p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 relative">
-            {/* Avatar - top-left */}
-            {mode === "view" &&
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <div className="relative bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {/* Close Button (top-left) */}
+            <div className="absolute top-4 left-4 z-10">
+              <button
+                onClick={close}
+                className="text-gray-600 hover:text-red-500"
+              >
+                <FaTimes size={22} />
+              </button>
+            </div>
+
+            {/* Profile Pic (top-right) */}
+            {mode !== "add" &&
               form.profilePic &&
               typeof form.profilePic === "string" && (
-                <div className="absolute -top-4 -left-4">
+                <div className="absolute top-4 right-4 z-10">
                   <img
                     src={form.profilePic}
                     alt="Profile"
-                    className="w-16 h-16 rounded-full border-2 border-gray-300 object-cover shadow"
+                    className="w-20 h-20 rounded-full border-2 border-gray-300 object-cover shadow-md"
                   />
                 </div>
               )}
 
             {/* Header */}
-            <div className="flex justify-between items-center col-span-full mb-2">
+            <div className="col-span-full flex justify-center items-center mb-2">
               <h2 className="text-xl font-semibold">
                 {mode === "add"
                   ? "Add Student"
@@ -174,12 +183,9 @@ export default function Students() {
                   ? "Edit Student"
                   : "View Student"}
               </h2>
-              <button onClick={close}>
-                <FaTimes />
-              </button>
             </div>
 
-            {/* Form Fields */}
+            {/* Input Fields */}
             {[
               ["Name", "name"],
               ["Email", "email"],
@@ -192,7 +198,7 @@ export default function Students() {
               ["10th Year", "tenthYear"],
               ["12th Marks", "twelfthMarks"],
               ["12th Year", "twelfthYear"],
-              ["cgpa", "cgpa"],
+              ["CGPA", "cgpa"],
               ["Degree Year", "degreeYear"],
             ].map(([label, key]) => (
               <div key={key}>
@@ -220,7 +226,7 @@ export default function Students() {
               </div>
             ))}
 
-            {/* Resume + Profile Pic Upload (edit/add only) */}
+            {/* Uploads (only in edit/add mode) */}
             {mode !== "view" && (
               <>
                 <div>
@@ -257,13 +263,16 @@ export default function Students() {
               </>
             )}
 
-            {/* View Resume Button (only in view mode and if resume exists) */}
+            {/* View Resume Button */}
             {mode === "view" &&
               form.resume &&
               typeof form.resume === "string" && (
-                <div className="col-span-full flex justify-start">
+                <div className="col-span-full">
                   <button
-                    onClick={() => window.open(form.resume, "_blank")}
+                    onClick={() => {
+                      // Directly open the resume URL
+                      window.open(form.resume, "_blank");
+                    }}
                     className="mt-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
                   >
                     View Resume
@@ -271,9 +280,9 @@ export default function Students() {
                 </div>
               )}
 
-            {/* Submit Button (add/edit mode only) */}
+            {/* Save Button */}
             {mode !== "view" && (
-              <div className="flex justify-end col-span-full">
+              <div className="col-span-full flex justify-end mt-4">
                 <button
                   onClick={handleSave}
                   className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
